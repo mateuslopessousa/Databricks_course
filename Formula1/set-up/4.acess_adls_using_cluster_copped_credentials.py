@@ -1,20 +1,13 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC ###Access Azure Data Lake using access keys
-# MAGIC 1. Set the spark config fs.azure.account.key
+# MAGIC ###Access Azure Data Lake using cluster socped credentials
+# MAGIC 1. Set the spark config fs.azure.account.ke in the cluster
 # MAGIC 1. List files from demo container
 # MAGIC 1. Read data from circuits.csv file
 
 # COMMAND ----------
 
-formula1dl_account_key = dbutils.secrets.get(scope = 'formula1-scope', key = 'formula1dl')
 
-# COMMAND ----------
-
-spark.conf.set(
-    "fs.azure.account.key.formula1dlml.dfs.core.windows.net",
-    formula1dl_account_key
-)
 
 # COMMAND ----------
 
