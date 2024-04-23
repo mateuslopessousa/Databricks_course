@@ -75,4 +75,5 @@ races_final_df = races_renamed_df.withColumn("ingestions_date", current_timestam
 
 # COMMAND ----------
 
-races_final_df.write.mode("overwrite").parquet("/mnt/formula1dlml/processed/races")
+races_final_df.write.mode("overwrite").partitionBy("race_year").parquet("/mnt/formula1dlml/processed/races")
+##races_final_df.write.mode("overwrite").parquet("/mnt/formula1dlml/processed/races")

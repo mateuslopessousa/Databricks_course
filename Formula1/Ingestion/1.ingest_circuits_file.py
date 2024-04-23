@@ -78,3 +78,8 @@ circuits_final_df = circuits_renamed_df.withColumn("ingestions_date", current_ti
 # COMMAND ----------
 
 circuits_final_df.write.mode("overwrite").parquet("/mnt/formula1dlml/processed/circuits")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC
