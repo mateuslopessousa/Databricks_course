@@ -4,6 +4,19 @@
 
 # COMMAND ----------
 
+dbutils.widgets.text("p_data_source", "")
+v_data_source = dbutils.widgets.get("p_data_source")
+
+# COMMAND ----------
+
+# MAGIC %run "../includes/configuration"
+
+# COMMAND ----------
+
+# MAGIC %run "../includes/common_functions"
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC #####Step 1 - Read JSON file using the spark dataframe reader API
 
@@ -38,7 +51,7 @@ results_schema = StructType(fields = [StructField("resultId", IntegerType(), Fal
 
 results_df = spark.read \
 .schema(results_schema) \
-.json("/mnt/formula1dlml/raw/results.json")
+.json(f"{raw_folder_path}/results.json")
 
 # COMMAND ----------
 
@@ -60,8 +73,12 @@ results_with_columns_df = results_df.withColumnRenamed("resultId", "result_id") 
                                     .withColumnRenamed("fastestLap", "fastest_lap") \
                                     .withColumnRenamed("fastestLapTime", "fastest_lap_time") \
                                     .withColumnRenamed("FastestLapSpeed", "fastest_lap_speed") \
-                                    .withColumn("ingestions_date", current_timestamp()) 
+                                    .withCOlumn("Data_source", lit(v_data_source))
     
+
+# COMMAND ----------
+
+results_with_columns_df = add_ingestion_date(results_with_columns_df)
 
 # COMMAND ----------
 
@@ -80,7 +97,7 @@ results_final_df = results_with_columns_df.drop(col("statusId"))
 
 # COMMAND ----------
 
-results_final_df.write.mode("overwrite").partitionBy("race_id").parquet("/mnt/formula1dlml/processed/results")
+results_final_df.write.mode("overwrite").partitionBy("race_id").parquet(f"{processed_folder_path}/results")
 
 # COMMAND ----------
 

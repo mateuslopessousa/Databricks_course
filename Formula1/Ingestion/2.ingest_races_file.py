@@ -4,6 +4,19 @@
 
 # COMMAND ----------
 
+dbutils.widgets.text("p_data_source", "")
+v_data_source = dbutils.widgets.get("p_data_source")
+
+# COMMAND ----------
+
+# MAGIC %run "../includes/configuration"
+
+# COMMAND ----------
+
+# MAGIC %run "../includes/common_functions"
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC #####Step 1 - Read the CSV file using the spark datafram reader
 
@@ -28,7 +41,7 @@ races_schema = StructType(fields=[StructField("raceId", IntegerType(), False),
 races_df = spark.read \
 .option("header", True) \
 .schema(races_schema) \
-.csv("dbfs:/mnt/formula1dlml/raw/races.csv")
+.csv(f"{raw_folder_path}/races.csv")
 
 # COMMAND ----------
 
@@ -37,7 +50,7 @@ races_df = spark.read \
 
 # COMMAND ----------
 
-from pyspark.sql.functions import col
+from pyspark.sql.functions import col, lit
 
 # COMMAND ----------
 
@@ -52,7 +65,8 @@ races_selected_df = races_df.select(col("raceId"), col("year"), col("round"), co
 
 races_renamed_df = races_selected_df.withColumnRenamed("receId", "race_id") \
 .withColumnRenamed("year", "race_year") \
-.withColumnRenamed("circuitId", "circuit_id") 
+.withColumnRenamed("circuitId", "circuit_id") \
+.withColumn("Data_source", lit(v_data_source))
 
 # COMMAND ----------
 
@@ -65,8 +79,11 @@ from pyspark.sql.functions import current_timestamp, lit, to_timestamp, concat
 
 # COMMAND ----------
 
-races_final_df = races_renamed_df.withColumn("ingestions_date", current_timestamp()) \
-.withColumn("race_timestamp", to_timestamp(concat(col('date'),lit(' '),col('time')), 'yyyy-MM-dd HH:mm:ss'))
+races_final_df = races_renamed_df.withColumn("race_timestamp", to_timestamp(concat(col('date'),lit(' '),col('time')), 'yyyy-MM-dd HH:mm:ss'))
+
+# COMMAND ----------
+
+races_final_df = add_ingestion_date(races_final_df)
 
 # COMMAND ----------
 
@@ -75,5 +92,5 @@ races_final_df = races_renamed_df.withColumn("ingestions_date", current_timestam
 
 # COMMAND ----------
 
-races_final_df.write.mode("overwrite").partitionBy("race_year").parquet("/mnt/formula1dlml/processed/races")
+races_final_df.write.mode("overwrite").partitionBy("race_year").parquet(f"{processed_folder_path}/races")
 ##races_final_df.write.mode("overwrite").parquet("/mnt/formula1dlml/processed/races")
