@@ -58,7 +58,7 @@ from pyspark.sql.functions import current_timestamp
 # COMMAND ----------
 
 final_df = race_results_df.select("race_year", "race_name", "circuit_location", "driver_name",
-                                  "driver_nationality", "team", "grid", "fastest_lap", "race_time", "points") \
+                                  "driver_nationality", "team", "grid", "fastest_lap", "race_time", "points", "position") \
                           .withColumn("created_date", current_timestamp())
 
 # COMMAND ----------
