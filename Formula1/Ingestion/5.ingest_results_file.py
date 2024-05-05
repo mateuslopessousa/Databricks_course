@@ -73,7 +73,7 @@ results_with_columns_df = results_df.withColumnRenamed("resultId", "result_id") 
                                     .withColumnRenamed("fastestLap", "fastest_lap") \
                                     .withColumnRenamed("fastestLapTime", "fastest_lap_time") \
                                     .withColumnRenamed("FastestLapSpeed", "fastest_lap_speed") \
-                                    .withCOlumn("Data_source", lit(v_data_source))
+                                    .withColumn("Data_source", lit(v_data_source))
     
 
 # COMMAND ----------
