@@ -56,18 +56,18 @@ pit_stops_df = spark.read \
 
 # COMMAND ----------
 
+pit_stops_with_ingestion_date_df = add_ingestion_date(pit_stops_df)
+
+# COMMAND ----------
+
 from pyspark.sql.functions import current_timestamp, lit
 
 # COMMAND ----------
 
-final_df = pit_stops_df.withColumnRenamed("driverId", "driver_id") \
+final_df = pit_stops_with_ingestion_date_df.withColumnRenamed("driverId", "driver_id") \
                        .withColumnRenamed("raceID", "race_id") \
                        .withColumn("data_source", lit(v_data_source)) \
-                       .withColumn("data_source", lit(v_file_date))
-
-# COMMAND ----------
-
-final_df = add_ingestion_date(final_df)
+                       .withColumn("file_date", lit(v_file_date))
 
 # COMMAND ----------
 
@@ -76,8 +76,12 @@ final_df = add_ingestion_date(final_df)
 
 # COMMAND ----------
 
+overwrite_partition(final_df, 'f1_processed', 'pit_stops', 'race_id')
+
+# COMMAND ----------
+
 #final_df.write.mode("overwrite").parquet(f"{processed_folder_path}/pit_stops")
-final_df.write.mode("overwrite").format("parquet").saveAsTable("f1_processed.pit_stops")
+#final_df.write.mode("overwrite").format("parquet").saveAsTable("f1_processed.pit_stops")
 
 # COMMAND ----------
 

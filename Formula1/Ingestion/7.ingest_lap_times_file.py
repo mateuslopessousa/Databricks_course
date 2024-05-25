@@ -74,8 +74,17 @@ final_df = add_ingestion_date(final_df)
 
 # COMMAND ----------
 
+overwrite_partition(final_df, 'f1_processed', 'lap_times', 'race_id')
+
+# COMMAND ----------
+
 #final_df.write.mode("overwrite").parquet(f"{processed_folder_path}/lap_times")
-final_df.write.mode("overwrite").format("parquet").saveAsTable("f1_processed.lap_times")
+#final_df.write.mode("overwrite").format("parquet").saveAsTable("f1_processed.lap_times")
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC --drop table f1_processed.lap_times
 
 # COMMAND ----------
 
