@@ -7,10 +7,6 @@ race_results_df = spark.read.parquet(f"{presentation_folder_path}/race_results")
 
 # COMMAND ----------
 
-display(race_results)
-
-# COMMAND ----------
-
 from pyspark.sql.functions import sum, count, when, col
 
 driver_standings_df = race_results_df \
@@ -28,12 +24,5 @@ final_df = driver_standings_df.withColumn("rank", rank().over(driver_rank_spec))
 
 # COMMAND ----------
 
-display(driver_standings_df.filter("race_year = 2020"))
-
-# COMMAND ----------
-
-display(final_df.filter("race_year = 2020"))
-
-# COMMAND ----------
-
-final_df.write.mode("overwrite").parquet(f"{presentation_folder_path}/driver_standings")
+#final_df.write.mode("overwrite").parquet(f"{presentation_folder_path}/driver_standings")
+final_df.write.mode("overwrite").format("parquet").saveAsTable("f1_presentation.driver_standings")
