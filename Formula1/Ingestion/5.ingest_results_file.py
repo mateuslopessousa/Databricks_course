@@ -127,29 +127,18 @@ results_final_df = results_with_columns_df.drop(col("statusId"))
 
 # COMMAND ----------
 
-spark.conf.set("spark.sql.sources.partitionOverwriteMode", "dynamic")
-
-# COMMAND ----------
-
-results_final_df = results_final_df.select("result_id", "driver_id", "constructor_id", "number", "grid", "position", "position_text", "position_order", "points", "laps", "time", "milliseconds", "fastest_lap", "rank", "fastest_lap_time", "fastest_lap_speed", "data_source", "file_date", "ingestion_date", "race_id")
-
-# COMMAND ----------
-
-if (spark._jsparkSession.catalog().tableExists("f1_processed.results")):
-    results_final_df.write.mode("overwrite").insertInto("f1_processed.results")
-else:
-    results_final_df.write.mode("overwrite").partitionBy("race_id").format("parquet").saveAsTable("f1_processed.results")
+overwrite_partition(results_final_df, 'f1_processed', 'results', 'race_id')
 
 # COMMAND ----------
 
 # MAGIC %sql
+# MAGIC
 # MAGIC select * from f1_processed.results
 
 # COMMAND ----------
 
-# MAGIC %md
+dbutils.notebook.exit("Success")
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC --drop table f1_processed.results
+# MAGIC %md
