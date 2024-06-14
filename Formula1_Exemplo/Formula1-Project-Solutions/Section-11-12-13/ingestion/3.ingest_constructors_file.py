@@ -15,7 +15,7 @@ constructors_schema = "constructorId INT, constructorRef STRING, name STRING, na
 
 constructor_df = spark.read \
 .schema(constructors_schema) \
-.json("/mnt/formula1dl/raw/constructors.json")
+.json("/mnt/formula1dlmls/raw/constructors.json")
 
 # COMMAND ----------
 
@@ -52,7 +52,7 @@ constructor_final_df = constructor_dropped_df.withColumnRenamed("constructorId",
 
 # COMMAND ----------
 
-constructor_final_df.write.mode("overwrite").parquet("/mnt/formula1dl/processed/constructors")
+constructor_final_df.write.mode("overwrite").parquet("/mnt/formula1dlmls/processed/constructors")
 
 # COMMAND ----------
 
