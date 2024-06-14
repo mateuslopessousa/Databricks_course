@@ -36,7 +36,7 @@ results_schema = StructType(fields=[StructField("resultId", IntegerType(), False
 
 results_df = spark.read \
 .schema(results_schema) \
-.json("/mnt/formula1dl/raw/results.json")
+.json("/mnt/formula1dlmls/raw/results.json")
 
 # COMMAND ----------
 
@@ -80,7 +80,7 @@ results_final_df = results_with_columns_df.drop(col("statusId"))
 
 # COMMAND ----------
 
-results_final_df.write.mode("overwrite").partitionBy('race_id').parquet("/mnt/formula1dl/processed/results")
+results_final_df.write.mode("overwrite").partitionBy('race_id').parquet("/mnt/formula1dlmls/processed/results")
 
 # COMMAND ----------
 
