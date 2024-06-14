@@ -7,21 +7,21 @@
 
 # COMMAND ----------
 
-formula1dl_demo_sas_token = dbutils.secrets.get(scope = 'formula1-scope', key = 'formula1dl-demo-sas-token')
+formula1dlmls_demo_sas_token = dbutils.secrets.get(scope = 'formula1-scope', key = 'formula1dl-demo-sas-token')
 
 # COMMAND ----------
 
-spark.conf.set("fs.azure.account.auth.type.formula1dl.dfs.core.windows.net", "SAS")
-spark.conf.set("fs.azure.sas.token.provider.type.formula1dl.dfs.core.windows.net", "org.apache.hadoop.fs.azurebfs.sas.FixedSASTokenProvider")
-spark.conf.set("fs.azure.sas.fixed.token.formula1dl.dfs.core.windows.net", formula1dl_demo_sas_token)
+spark.conf.set("fs.azure.account.auth.type.formula1dlmls.dfs.core.windows.net", "SAS")
+spark.conf.set("fs.azure.sas.token.provider.type.formula1dlmls.dfs.core.windows.net", "org.apache.hadoop.fs.azurebfs.sas.FixedSASTokenProvider")
+spark.conf.set("fs.azure.sas.fixed.token.formula1dlmls.dfs.core.windows.net", formula1dlmls_demo_sas_token)
 
 # COMMAND ----------
 
-display(dbutils.fs.ls("abfss://demo@formula1dl.dfs.core.windows.net"))
+display(dbutils.fs.ls("abfss://demo@formula1dlmls.dfs.core.windows.net"))
 
 # COMMAND ----------
 
-display(spark.read.csv("abfss://demo@formula1dl.dfs.core.windows.net/circuits.csv"))
+display(spark.read.csv("abfss://demo@formula1dlmls.dfs.core.windows.net/circuits.csv"))
 
 # COMMAND ----------
 
