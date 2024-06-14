@@ -34,7 +34,7 @@ drivers_schema = StructType(fields=[StructField("driverId", IntegerType(), False
 
 drivers_df = spark.read \
 .schema(drivers_schema) \
-.json("/mnt/formula1dl/raw/drivers.json")
+.json("/mnt/formula1dlmls/raw/drivers.json")
 
 # COMMAND ----------
 
@@ -75,7 +75,7 @@ drivers_final_df = drivers_with_columns_df.drop(col("url"))
 
 # COMMAND ----------
 
-drivers_final_df.write.mode("overwrite").parquet("/mnt/formula1dl/processed/drivers")
+drivers_final_df.write.mode("overwrite").parquet("/mnt/formula1dlmls/processed/drivers")
 
 # COMMAND ----------
 
