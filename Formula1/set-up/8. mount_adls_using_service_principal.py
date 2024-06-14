@@ -35,8 +35,16 @@ def mount_adls (storage_account_name, container_name):
 
 # COMMAND ----------
 
-mount_adls('formula1dlml', 'presentation')
+mount_adls('formula1dlmls', 'presentation')
 
 # COMMAND ----------
 
-mount_adls('formula1dlml', 'raw')
+mount_adls('formula1dlmls', 'raw')
+
+# COMMAND ----------
+
+mount_adls('formula1dlmls', 'processed')
+
+# COMMAND ----------
+
+mount_adls('formula1dlmls', 'demo')
