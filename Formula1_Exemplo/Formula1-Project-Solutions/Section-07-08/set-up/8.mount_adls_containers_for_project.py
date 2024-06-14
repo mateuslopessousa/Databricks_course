@@ -6,9 +6,9 @@
 
 def mount_adls(storage_account_name, container_name):
     # Get secrets from Key Vault
-    client_id = dbutils.secrets.get(scope = 'formula1-scope', key = 'formula1-app-client-id')
-    tenant_id = dbutils.secrets.get(scope = 'formula1-scope', key = 'formula1-app-tenant-id')
-    client_secret = dbutils.secrets.get(scope = 'formula1-scope', key = 'formula1-app-client-secret')
+    client_id = dbutils.secrets.get(scope = 'formula1-scope', key = 'client-id')
+    tenant_id = dbutils.secrets.get(scope = 'formula1-scope', key = 'tenant-id')
+    client_secret = dbutils.secrets.get(scope = 'formula1-scope', key = 'client-secret')
     
     # Set spark configurations
     configs = {"fs.azure.account.auth.type": "OAuth",
@@ -36,15 +36,15 @@ def mount_adls(storage_account_name, container_name):
 
 # COMMAND ----------
 
-mount_adls('formula1dl', 'raw')
+mount_adls('formula1dlmls', 'raw')
 
 # COMMAND ----------
 
-mount_adls('formula1dl', 'processed')
+mount_adls('formula1dlmls', 'processed')
 
 # COMMAND ----------
 
-mount_adls('formula1dl', 'presentation')
+mount_adls('formula1dlmls', 'presentation')
 
 # COMMAND ----------
 
